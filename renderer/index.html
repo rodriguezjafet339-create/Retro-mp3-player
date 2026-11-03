@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro mp3 player</title>
+    <link id="theme" rel="stylesheet" href="classic.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <audio></audio>
+    <div id="case">
+      <div class="displays">
+        <div class="top-controls">
+          <button id="backwards"></button>
+          <button id="forwards"></button>
+        </div>
+        <div id="glass">
+          <div id="screen">
+            <div id="text_output">
+              <p id="author_track">Ethel Cain - Knuckle Velvet</p>
+            </div>
+            <div class="player-progress">
+              <span id="current">0:00</span>
+              <div id="progress-track">
+                <div id="progress-bar"></div>
+              </div>
+              <span id="total">0:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pad">
+        <button class="up" id="Volume_up">+</button>
+        <button class="prev" id="Previous">◀◀</button>
+        <button class="play" id="Play_pause"></button>
+        <button class="next" id="Next">▶▶</button>
+        <button class="down" id="Volume_down">−</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const caseElement = document.getElementById("glass");
+    const styles = ["classic.css", "wine.css"];
+    let i = 0;
+
+    caseElement.addEventListener("dblclick", () => {
+      i = (i + 1) % styles.length;
+      document.getElementById("theme").href = styles[i];
+    });
+  </script>
+</html>
