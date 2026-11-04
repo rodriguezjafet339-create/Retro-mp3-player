@@ -7,7 +7,7 @@
     <link id="theme" rel="stylesheet" href="classic.css" />
     <script src="script.js" defer></script>
   </head>
-  <body>
+  <body style="visibility: hidden">
     <audio></audio>
     <div id="case">
       <div class="displays">
@@ -39,14 +39,4 @@
       </div>
     </div>
   </body>
-  <script>
-    const caseElement = document.getElementById("glass");
-    const styles = ["classic.css", "wine.css"];
-    let i = 0;
-
-    caseElement.addEventListener("dblclick", () => {
-      i = (i + 1) % styles.length;
-      document.getElementById("theme").href = styles[i];
-    });
-  </script>
 </html>

@@ -8,6 +8,9 @@ const totalTime = document.getElementById("total");
 const progressBar = document.getElementById("progress-bar");
 const SKIP_SECONDS = 10;
 const RESTART_THRESHOLD = 3;
+const themeLink = document.getElementById("theme");
+const THEMES = ["classic.css", "wine.css"];
+let themeIndex = 0;
 
 let songs = [];
 let index = 0;
@@ -46,11 +49,11 @@ document.getElementById("Previous").addEventListener("click", () => {
 });
 
 document.getElementById("Volume_up").addEventListener("click", () => {
-  audio.volume = Math.min(1, audio.volume + 0.1);
+  setVolume(audio.volume + 0.1);
 });
 
 document.getElementById("Volume_down").addEventListener("click", () => {
-  audio.volume = Math.max(0, audio.volume - 0.1);
+  setVolume(audio.volume - 0.1);
 });
 
 audio.addEventListener("ended", () => loadSong(index + 1));
@@ -94,6 +97,12 @@ document.getElementById("backwards").addEventListener("click", () => {
   updateProgress();
 });
 
+document.getElementById("glass").addEventListener("dblclick", () => {
+  themeIndex = (themeIndex + 1) % THEMES.length;
+  applyTheme(THEMES[themeIndex]);
+  window.api.saveState({ theme: THEMES[themeIndex] });
+});
+
 function playAudio() {
   audio.play().catch((err) => {
     if (err.name === "NotAllowedError" && !isPaused) setPaused(true);
@@ -104,11 +113,21 @@ function loadSong(i) {
   index = (i + songs.length) % songs.length;
   const song = songs[index];
   audio.src = song.url;
+  window.api.saveState({ lastSongPath: song.path });
   authorTrack.textContent = song.title;
   scroller.reset();
   updateProgress();
   totalTime.textContent = "0:00";
   if (!isPaused) playAudio();
+}
+
+function applyTheme(name) {
+  return new Promise((resolve) => {
+    if (themeLink.getAttribute("href") === name) return resolve();
+    themeLink.addEventListener("load", resolve, { once: true });
+    themeLink.addEventListener("error", resolve, { once: true });
+    themeLink.href = name;
+  });
 }
 
 function changeSong(i) {
@@ -127,6 +146,11 @@ function setPaused(paused) {
     playAudio();
     playAnimation();
   }
+}
+
+function setVolume(v) {
+  audio.volume = Math.round(Math.min(1, Math.max(0, v)) * 10) / 10;
+  window.api.saveState({ volume: audio.volume });
 }
 
 function formatTime(seconds) {
@@ -203,12 +227,25 @@ function blink(el, { duration = 1000, minOpacity = 0 } = {}) {
 }
 
 async function init() {
-  songs = await window.api.getSongs();
+  const [list, state] = await Promise.all([
+    window.api.getSongs(),
+    window.api.getState(),
+  ]);
+  songs = list;
+
+  themeIndex = Math.max(0, THEMES.indexOf(state.theme));
+  await applyTheme(THEMES[themeIndex]);
+  document.body.style.visibility = "visible";
+
+  audio.volume = state.volume; // before loadSong, so the first second isn't at the wrong level
+
   if (songs.length === 0) {
     authorTrack.textContent = "No songs found in your Music folder";
     return;
   }
-  loadSong(0);
+
+  const saved = songs.findIndex((s) => s.path === state.lastSongPath);
+  loadSong(saved === -1 ? 0 : saved); // saved song missing? fall back to song 0
 }
 
 init();
