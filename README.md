@@ -33,6 +33,8 @@ Windows may show "Windows protected your PC" the first time, because the app isn
 2. Open the app. It starts playing automatically.
 3. Use the pad buttons to control playback/pause/play.
 4. The thin buttons above the screen are for skipping 10s back/forwards.
+5. To close or minimize, hover over to the top right corner of the window/"widget".
+![Retro MP3 Player screenshot](CloseMinimize.png)
 
 ## Limitations
 
