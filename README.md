@@ -8,8 +8,8 @@ displaying your songs with style and class. It's a good conversation starter, ve
 so it won't get in the way with your workflow, and don't like the current song? just skip it from the side. No need for reopening and 
 closing your old default media player.
 
-   ![Retro MP3 Player screenshot](screenshot(297).png)
-   ![Retro MP3 Player screenshot](screenshot(298).png)
+   ![Retro MP3 Player screenshot](Screenshot(297).png)
+   ![Retro MP3 Player screenshot](Screenshot(298).png)
 
 ## Download
 
