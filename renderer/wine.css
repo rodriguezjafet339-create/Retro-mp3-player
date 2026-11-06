@@ -162,9 +162,9 @@ body {
   border-radius: 2px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* vertically center the content */
+  justify-content: center; 
   gap: 0;
-  overflow: hidden; /* nothing can spill outside the screen */
+  overflow: hidden; 
   box-shadow: 10px 10px 5px -8px rgba(63, 72, 61, 0.75) inset;
   -webkit-box-shadow: 10px 10px 5px -8px rgba(63, 72, 61, 0.75) inset;
   -moz-box-shadow: 10px 10px 5px -8px rgba(63, 72, 61, 0.75) inset;
@@ -177,13 +177,13 @@ body {
   font-size: 15px;
   line-height: 15px;
   height: 16px;
-  flex: none; /* never let flexbox squash the title */
+  flex: none;
   overflow: visible;
   display: inline-block;
 }
 
 #text_output p {
-  margin: 0; /* remove the default <p> margins */
+  margin: 0; 
   position: absolute;
 }
 
@@ -205,7 +205,7 @@ body {
 }
 
 #progress-bar {
-  width: 100%;
+  width: 0%;
   height: 100%;
   background: #000;
 }

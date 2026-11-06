@@ -103,6 +103,13 @@ document.getElementById("glass").addEventListener("dblclick", () => {
   window.api.saveState({ theme: THEMES[themeIndex] });
 });
 
+document
+  .getElementById("win-min")
+  .addEventListener("click", () => window.api.minimize());
+document
+  .getElementById("win-close")
+  .addEventListener("click", () => window.api.close());
+
 function playAudio() {
   audio.play().catch((err) => {
     if (err.name === "NotAllowedError" && !isPaused) setPaused(true);
@@ -237,7 +244,7 @@ async function init() {
   await applyTheme(THEMES[themeIndex]);
   document.body.style.visibility = "visible";
 
-  audio.volume = state.volume; // before loadSong, so the first second isn't at the wrong level
+  audio.volume = state.volume;
 
   if (songs.length === 0) {
     authorTrack.textContent = "No songs found in your Music folder";
@@ -245,7 +252,7 @@ async function init() {
   }
 
   const saved = songs.findIndex((s) => s.path === state.lastSongPath);
-  loadSong(saved === -1 ? 0 : saved); // saved song missing? fall back to song 0
+  loadSong(saved === -1 ? 0 : saved);
 }
 
 init();

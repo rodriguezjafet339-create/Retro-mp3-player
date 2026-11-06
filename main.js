@@ -15,7 +15,6 @@ let knownPaths = new Set();
 
 const stateFile = () => path.join(app.getPath("userData"), "state.json");
 
-// Treat any input as untrusted: keep only valid fields, ignore the rest.
 function sanitize(input, base, requireKnownPath) {
   const out = { ...base };
   if (!input || typeof input !== "object") return out;
@@ -37,7 +36,7 @@ function loadState() {
     const raw = JSON.parse(fs.readFileSync(stateFile(), "utf8"));
     state = sanitize(raw, DEFAULT_STATE, false);
   } catch {
-    state = { ...DEFAULT_STATE }; // first launch, or missing/corrupt file
+    state = { ...DEFAULT_STATE };
   }
 }
 
@@ -47,7 +46,7 @@ function writeState() {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     const tmp = file + ".tmp";
     fs.writeFileSync(tmp, JSON.stringify(state, null, 2));
-    fs.renameSync(tmp, file); // atomic: a crash never leaves half a file
+    fs.renameSync(tmp, file);
   } catch (err) {
     console.error("Could not save state:", err);
   }
@@ -59,6 +58,12 @@ ipcMain.handle("save-state", (_event, partial) => {
   state = sanitize(partial, state, true);
   writeState();
 });
+
+ipcMain.on("minimize-window", (event) => {
+  BrowserWindow.fromWebContents(event.sender)?.minimize();
+});
+
+ipcMain.on("close-window", () => app.quit());
 
 function findMp3s(dir) {
   return fs
@@ -84,10 +89,15 @@ ipcMain.handle("get-songs", () => {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 360,
+    height: 170,
+    transparent: true,
+    frame: false,
+    hasShadow: true,
     resizable: false,
+    alwaysOnTop: true,
     autoHideMenuBar: true,
+    icon: path.join(__dirname, "build", "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
