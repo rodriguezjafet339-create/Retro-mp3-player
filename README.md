@@ -61,6 +61,12 @@ npm run dist
 
 The installer and portable `.exe` are created in the `dist/` folder. Build on Windows.
 
+## Feedback and bug reports
+
+Found a bug or have an idea? [Open an issue](../../issues).
+Please include your Windows version and what you were doing when it happened.
+Thank you so Much!
+
 ## License
 
 ISC
